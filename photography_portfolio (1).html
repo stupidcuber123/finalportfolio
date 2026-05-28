@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Arnav Gupta's Photography Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f1ede4;
+    --paper: #faf7f0;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --rule: #1a1a1a;
+    --muted: #8a8578;
+    --accent: #c54a2c;
+    --accent-soft: #e8d5cc;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+
+  /* NAV — left vertical rail */
+  nav {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 220px;
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    padding: 2.5rem 1.75rem;
+    display: flex; flex-direction: column;
+    z-index: 1000;
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.1;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+  .nav-logo em { font-style: italic; font-weight: 300; }
+  .nav-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3rem;
+  }
+  .nav-links { list-style: none; display: flex; flex-direction: column; gap: 0.1rem; }
+  .nav-links a {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(26,26,26,0.12);
+    transition: color 0.2s, padding 0.2s;
+  }
+  .nav-links a .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    width: 1.5rem;
+  }
+  .nav-links a:hover { padding-left: 0.5rem; color: var(--accent); }
+  .nav-links a.active { color: var(--accent); }
+  .nav-links a.active .num { color: var(--accent); }
+  .nav-foot {
+    margin-top: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* PAGES */
+  main { margin-left: 220px; min-height: 100vh; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .section-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  /* HOME — editorial cover */
+  .cover {
+    min-height: 100vh;
+    padding: 3.5rem 4rem 2rem;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  .cover-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .cover-top span { display: block; }
+  .cover-top .vol { font-family: 'Fraunces', serif; font-style: italic; font-size: 0.95rem; letter-spacing: 0; text-transform: none; color: var(--ink); }
+  .cover-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: end; padding: 4rem 0; }
+  .cover-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(4rem, 11vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+  }
+  .cover-name em { font-style: italic; color: var(--accent); display: block; font-weight: 300; }
+  .cover-meta {
+    display: flex; flex-direction: column; gap: 2rem;
+    padding-bottom: 1rem;
+  }
+  .cover-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 28ch;
+  }
+  .cover-cta { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.4rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid var(--ink);
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--bg); }
+
+  .cover-bottom {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+  }
+  .cover-bottom .col .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+  .cover-bottom .col .val {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  .cover-image {
+    margin-top: 3rem;
+    width: 100%;
+    aspect-ratio: 21/9;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+  .cover-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%); }
+
+  /* ABOUT — magazine spread */
+  .about-wrap { padding: 4rem; max-width: 1200px; }
+  .about-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .about-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .about-title em { font-style: italic; color: var(--accent); }
+  .about-grade {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .about-text::first-letter {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 4.5rem;
+    float: left;
+    line-height: 0.85;
+    padding: 0.3rem 0.6rem 0 0;
+    color: var(--accent);
+  }
+  .about-aside { display: flex; flex-direction: column; gap: 1.5rem; }
+  .about-photo { aspect-ratio: 3/4; overflow: hidden; border: 1px solid var(--rule); }
+  .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(15%); }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--rule); color: var(--ink);
+  }
+  .facts-block { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--rule); }
+  .facts-block h2 {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-weight: 300;
+    font-size: 1.8rem; margin-bottom: 1.5rem;
+  }
+  .info-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .info-list li {
+    display: grid; grid-template-columns: 140px 1fr;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(26,26,26,0.15);
+    align-items: baseline;
+  }
+  .info-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.15em;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .info-val { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--ink); }
+
+  /* RESUME */
+  .resume-wrap { padding: 4rem; max-width: 1000px; margin: 0 auto; }
+  .resume-wrap iframe { width: 100%; height: 90vh; border: 1px solid var(--rule); background: var(--paper); }
+
+  /* PORTFOLIO — magazine spread */
+  .port-wrap { padding: 4rem; }
+  .port-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 3rem;
+    align-items: end;
+  }
+  .port-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .port-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .port-title em { font-style: italic; color: var(--accent); }
+  .port-description {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* asymmetric masonry */
+  .port-gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-bottom: 4rem; }
+  .port-gallery .ph { overflow: hidden; border: 1px solid var(--rule); background: var(--paper); }
+  .port-gallery .ph img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(10%); transition: filter 0.4s, transform 0.6s; }
+  .port-gallery .ph:hover img { filter: grayscale(0%); transform: scale(1.02); }
+  /* size variants */
+  .sz-hero  { grid-column: span 12; aspect-ratio: 21/9; }
+  .sz-large { grid-column: span 8;  aspect-ratio: 4/3; }
+  .sz-tall  { grid-column: span 4;  aspect-ratio: 3/4; }
+  .sz-med   { grid-column: span 6;  aspect-ratio: 4/3; }
+  .sz-sm    { grid-column: span 4;  aspect-ratio: 1/1; }
+  .sz-wide  { grid-column: span 8;  aspect-ratio: 16/9; }
+
+  .port-written {
+    max-width: 720px;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .port-written h3 {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-weight: 300;
+    font-size: 1.8rem; margin-bottom: 1.25rem;
+  }
+  .port-written p {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.1rem; line-height: 1.7; color: var(--ink);
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 4rem;
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  footer .name { font-family: 'Fraunces', serif; font-style: italic; font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--ink); }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav {
+      position: relative; width: 100%; height: auto;
+      flex-direction: row; flex-wrap: wrap; align-items: center;
+      padding: 1rem 1.25rem; gap: 0.5rem 1rem;
+      border-right: none; border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo { font-size: 1.1rem; margin: 0; }
+    .nav-sub { display: none; }
+    .nav-links { flex-direction: row; flex-wrap: wrap; gap: 0.25rem 1rem; width: 100%; }
+    .nav-links a { padding: 0.35rem 0; border-bottom: none; font-size: 0.78rem; gap: 0.4rem; }
+    .nav-links a .num { width: auto; }
+    .nav-foot { display: none; }
+    main { margin-left: 0; }
+    .cover, .about-wrap, .port-wrap, .resume-wrap { padding: 2rem 1.25rem; }
+    .cover-body, .about-grid, .port-head { grid-template-columns: 1fr; gap: 2rem; }
+    .cover-bottom { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .info-list { grid-template-columns: 1fr; }
+    .sz-large, .sz-tall, .sz-med, .sz-sm, .sz-wide, .sz-hero { grid-column: span 12; aspect-ratio: 4/3; }
+    .about-text::first-letter { font-size: 3.2rem; }
+    footer { padding: 1.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="show('home')">Arnav <em>Gupta</em></div>
+  <div class="nav-sub">Photography · MMXXV</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="show('home')" class="active" id="nav-home"><span class="num">01</span>Home</a></li>
+    <li><a href="#" onclick="show('about')" id="nav-about"><span class="num">02</span>About</a></li>
+    <li><a href="#" onclick="show('resume')" id="nav-resume"><span class="num">03</span>Resume</a></li>
+    <li><a href="#" onclick="show('portfolio1')" id="nav-portfolio1"><span class="num">04</span>Event Photography</a></li>
+    <li><a href="#" onclick="show('portfolio2')" id="nav-portfolio2"><span class="num">05</span>Portrait Photography</a></li>
+    <li><a href="#" onclick="show('portfolio3')" id="nav-portfolio3"><span class="num">06</span>Photo Essay</a></li>
+  </ul>
+  <div class="nav-foot">© 2025</div>
+</nav>
+
+<main>
+
+<!-- HOME -->
+<div class="page active" id="home">
+  <div class="cover">
+    <div class="cover-top">
+      <span>Index · 01 / 06</span>
+      <span class="vol">A field journal of light & shadow</span>
+      <span>Fremont, CA</span>
+    </div>
+
+    <div class="cover-body">
+      <h1 class="cover-name">Arnav<em>Gupta.</em></h1>
+      <div class="cover-meta">
+        <div class="section-note">Photography Portfolio</div>
+        <p class="cover-tagline">Capturing light, shadow and the quiet moments in between.</p>
+        <div class="cover-cta">
+          <a class="btn btn-primary" href="#" onclick="show('portfolio1')">View My Work →</a>
+          <a class="btn btn-ghost" href="#" onclick="show('about')">About Me</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="col"><div class="lbl">Based</div><div class="val">Fremont, CA</div></div>
+      <div class="col"><div class="lbl">Focus</div><div class="val">Portrait · Event · Essay</div></div>
+      <div class="col"><div class="lbl">Year</div><div class="val">Class of 2025</div></div>
+      <div class="col"><div class="lbl">Next</div><div class="val">UC San Diego</div></div>
+    </div>
+
+    <div class="cover-image">
+      <img src="IMG_8381.jpg" alt="Arnav Gupta Photography">
+    </div>
+  </div>
+
+  <footer>
+    <div class="name">Arnav Gupta's Photography Portfolio</div>
+    <div>© 2025 · All rights reserved</div>
+  </footer>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="about">
+  <div class="about-wrap">
+    <div class="about-eyebrow">02 — About</div>
+    <h1 class="about-title">Who <em>I am.</em></h1>
+    <div class="about-grade">12th Grade · Mission San Jose High School</div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        My name is Arnav Gupta, and I am a senior at Mission San Jose High School with a passion for photography and visual storytelling. I first picked up a camera this year and quickly fell in love with portrait and street photography as I love capturing real, unplanned moments that tell a story without words. Outside of photography, I love speedcubing and chess — just puzzles in general! Through this class I've learned manual camera settings, natural lighting, and Lightroom editing, and I'm most proud of my community voices project capturing my fellow peers and teachers on campus. Next year, I'm off to UC San Diego and though I will be studying biology in hopes to attend medical school, I'll always keep shooting photos on the side and making it a large part of my college experience and beyond!
+      </div>
+      <div class="about-aside">
+        <div class="about-photo"><img src="IMG_4772.jpeg" alt="Arnav Gupta"></div>
+        <div class="about-tags">
+          <span class="tag">Portrait</span>
+          <span class="tag">Event</span>
+          <span class="tag">Photo Essay</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="facts-block">
+      <div class="section-note">Quick Facts</div>
+      <h2>At a glance.</h2>
+      <ul class="info-list">
+        <li><span class="info-label">Name</span><span class="info-val">Arnav Gupta</span></li>
+        <li><span class="info-label">Grade</span><span class="info-val">12th</span></li>
+        <li><span class="info-label">School</span><span class="info-val">Mission San Jose High School</span></li>
+        <li><span class="info-label">Photography</span><span class="info-val">Portrait, Event, Photo Essay</span></li>
+        <li><span class="info-label">Fun Fact</span><span class="info-val">I've memorized 100 digits of pi!</span></li>
+        <li><span class="info-label">Email</span><span class="info-val">guptaarnav345@gmail.com</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="name">Arnav Gupta's Photography Portfolio</div>
+    <div>© 2025 · All rights reserved</div>
+  </footer>
+</div>
+
+<!-- RESUME -->
+<div class="page" id="resume">
+  <div class="resume-wrap">
+    <div class="about-eyebrow">03 — Resume</div>
+    <h1 class="about-title" style="margin-bottom:2rem;">Resume.</h1>
+    <iframe src="Uploaded resume.pdf"></iframe>
+  </div>
+  <footer>
+    <div class="name">Arnav Gupta's Photography Portfolio</div>
+    <div>© 2025 · All rights reserved</div>
+  </footer>
+</div>
+
+<!-- PORTFOLIO 1 — Event Photography -->
+<div class="page" id="portfolio1">
+  <div class="port-wrap">
+    <div class="port-head">
+      <div>
+        <div class="port-category">Portfolio · 01</div>
+        <h1 class="port-title">Event <em>Photography.</em></h1>
+      </div>
+      <p class="port-description">Capturing the beauty and variety of vehicles on display at a local car show, from sleek modern sports cars to meticulously restored classics.</p>
+    </div>
+
+    <div class="port-gallery">
+      <div class="ph sz-hero"><img src="Gupta_Arnav_CarShow3.jpg" alt="Car Show Feature"></div>
+      <div class="ph sz-large"><img src="Gupta_Arnav_CarShow1.jpg" alt="Car Show 1"></div>
+      <div class="ph sz-tall"><img src="Gupta_Arnav_CarShow2.jpg" alt="Car Show 2"></div>
+      <div class="ph sz-sm"><img src="Gupta_Arnav_CarShow4.jpg" alt="Car Show 4"></div>
+      <div class="ph sz-sm"><img src="Gupta_Arnav_CarShow5.jpg" alt="Car Show 5"></div>
+      <div class="ph sz-sm"><img src="Gupta_Arnav_CarShow6.jpg" alt="Car Show 6"></div>
+      <div class="ph sz-wide"><img src="Gupta_Arnav_CarShow7.jpg" alt="Car Show 7"></div>
+    </div>
+
+    <div class="port-written">
+      <div class="section-note">Written Component</div>
+      <h3>About This Project</h3>
+      <p>This collection captures the beauty and variety of vehicles on display at a local car show, from sleek modern sports cars to meticulously restored classics. I focused on the details that make each car unique — the curves of the bodywork, the gleam of polished chrome, and the bold colors that draw the eye. Shooting the vehicles up close allowed me to experiment with angles and framing to highlight each car as its own work of art.</p>
+    </div>
+  </div>
+  <footer>
+    <div class="name">Arnav Gupta's Photography Portfolio</div>
+    <div>© 2025 · All rights reserved</div>
+  </footer>
+</div>
+
+<!-- PORTFOLIO 2 — Portrait Photography -->
+<div class="page" id="portfolio2">
+  <div class="port-wrap">
+    <div class="port-head">
+      <div>
+        <div class="port-category">Portfolio · 02</div>
+        <h1 class="port-title">Portrait <em>Photography.</em></h1>
+      </div>
+      <p class="port-description">Capturing the personality and spirit of the students and teachers that make up the Mission San Jose community through a series of candid and posed portraits.</p>
+    </div>
+
+    <div class="port-gallery">
+      <div class="ph sz-large"><img src="Gupta_Arnav_BeyProject2.jpg" alt="Portrait 2"></div>
+      <div class="ph sz-tall"><img src="Gupta_Arnav_BeyProject3.jpg" alt="Portrait 3"></div>
+      <div class="ph sz-hero"><img src="Gupta_Arnav_BeyProject_1.jpg" alt="Portrait 1"></div>
+    </div>
+
+    <div class="port-written">
+      <div class="section-note">Written Component</div>
+      <h3>About This Project</h3>
+      <p>This collection captures the diverse faces and personalities that make up the Mission San Jose community, from students in the hallways to teachers in their element. I focused on the details that make each person unique as well as the quiet moments that reveal character. Photographing my peers and teachers up close allowed me to experiment with natural light and framing to present each portrait as a window into who they are.</p>
+    </div>
+  </div>
+  <footer>
+    <div class="name">Arnav Gupta's Photography Portfolio</div>
+    <div>© 2025 · All rights reserved</div>
+  </footer>
+</div>
+
+<!-- PORTFOLIO 3 — Photo Essay -->
+<div class="page" id="portfolio3">
+  <div class="port-wrap">
+    <div class="port-head">
+      <div>
+        <div class="port-category">Portfolio · 03</div>
+        <h1 class="port-title">Photo <em>Essay.</em></h1>
+      </div>
+      <p class="port-description">An exploration of the interactions between humans and nature, capturing their dynamic coexistence.</p>
+    </div>
+
+    <div class="port-gallery">
+      <div class="ph sz-large"><img src="2f4b2f70-2dbc-4c19-becc-ba5b6f3942ee-md.jpeg" alt="Photo Essay 1"></div>
+      <div class="ph sz-tall"><img src="5f64ec2e-19f9-4cc6-a103-42d3fe2a24b8.png" alt="Photo Essay 2"></div>
+      <div class="ph sz-sm"><img src="9d16a5d6-dc25-48b6-bb2b-50aa1b2c0594.png" alt="Photo Essay 3"></div>
+      <div class="ph sz-sm"><img src="91d35782-0575-4783-88fd-b93614d87bd4.png" alt="Photo Essay 4"></div>
+      <div class="ph sz-sm"><img src="0995b273-641f-481b-ab3f-41dd82c19afc.png" alt="Photo Essay 5"></div>
+      <div class="ph sz-med"><img src="25871eec-7eb6-43aa-bf91-de4801a3ae5f.png" alt="Photo Essay 6"></div>
+      <div class="ph sz-med"><img src="a6e96b32-3f52-421d-8e71-f88cf92499bf.png" alt="Photo Essay 7"></div>
+      <div class="ph sz-sm"><img src="a88f3a47-bad4-4913-80bc-f4ec3000287b.png" alt="Photo Essay 8"></div>
+      <div class="ph sz-wide"><img src="af11195d-0497-4a09-bdf6-b4d86574b55a.png" alt="Photo Essay 9"></div>
+      <div class="ph sz-hero"><img src="f9e89c2a-d5a5-4880-a488-24016b6f7637.png" alt="Photo Essay 10"></div>
+    </div>
+
+    <div class="port-written">
+      <div class="section-note">Written Component</div>
+      <h3>About This Project</h3>
+      <p>This collection explores the delicate relationship between humans and the natural world, capturing moments where our impact on the environment is both visible and deeply felt. I focused on the details that tell the story of climate change — the contrast between urban sprawl and struggling greenery, the beauty of nature persisting despite human interference, and the quiet urgency in scenes we often overlook. Photographing this theme challenged me to find powerful compositions that spark conversation about how we treat the planet we share.</p>
+    </div>
+  </div>
+  <footer>
+    <div class="name">Arnav Gupta's Photography Portfolio</div>
+    <div>© 2025 · All rights reserved</div>
+  </footer>
+</div>
+
+</main>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const page = document.getElementById(id);
+    if (page) page.classList.add('active');
+    const navLink = document.getElementById('nav-' + id);
+    if (navLink) navLink.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+  }
+</script>
+</body>
+</html>
